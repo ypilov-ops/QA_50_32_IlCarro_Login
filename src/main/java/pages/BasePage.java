@@ -19,7 +19,7 @@ public abstract class BasePage {
         }
     }
 
-    public boolean isElementPresent(WebElement element) {
+    public boolean isElementDisplayed(WebElement element){
         return element.isDisplayed();
     }
 }
