@@ -29,11 +29,13 @@ public class LoginPage extends BasePage{
 
     }
 
-    public void clickYalla(){
+    public void clickBtnYalla(){
         btnYalla.click();
+
+
+}
+    public boolean isLoggedInDisplayed(){
+        return isElementDisplayed(popUpSuccessfulLogin);
     }
 
-    public boolean isLoggedInDisplayed(){
-        return isElementPresent(popUpSuccessfulLogin);
-    }
 }

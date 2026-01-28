@@ -6,24 +6,19 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.AjaxElementLocatorFactory;
 
-public class HomePage extends BasePage{
-    public HomePage(WebDriver driver) {
+public class PopUpPage extends BasePage{
+    public PopUpPage(WebDriver driver) {
         setDriver(driver);
         driver.get("https://ilcarro.web.app/search");
         PageFactory.initElements
                 (new AjaxElementLocatorFactory(driver, 10), this);
     }
 
-    @FindBy(xpath = "//a[text()=' Log in ']")
-    WebElement btnLogin;
-    @FindBy(xpath = "//a[text()=' Sign up ']")
-    WebElement btnSignUp;
+    @FindBy(xpath = "//mat-dialog-container//h2")
+    WebElement message;
 
+    public boolean isTextInPopUpMessagePresent(String text){
+        return isTextInElementPresentWait(message, text);
+    }
 
-    public void clickBtnLogin() {
-        btnLogin.click();
-    }
-    public void clickBtnSignUp(){
-        btnSignUp.click();
-    }
 }
