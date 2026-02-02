@@ -61,7 +61,7 @@ public class LoginTests extends ApplicationManager {
                 .isTextInPopUpMessagePresent("Login or Password incorrect"));
     }
     @Test
-    public void loginNegativeTest_WrongEmail_Empty(){
+    public void loginNegativeTest_Password_Empty(){
         User user = User.builder()
                 .email("sima_simonova370gmail.com")
                 .password("")

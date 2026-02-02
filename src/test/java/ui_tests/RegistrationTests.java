@@ -147,5 +147,94 @@ public class RegistrationTests extends ApplicationManager {
         softAssert.assertAll();
     }
 
+    @Test
+    public void registrationNegativeTest_WrongPasswordNoUppercase() {
+        User user = User.builder()
+                .firstName("Pietro")
+                .lastName("Aretino")
+                .email("Venezia@gmail.it")
+                .password("s3r3n!s5!m@")
+                .build();
+        registrationPage.typeRegistrationForm(user);
+        registrationPage.setCheckBoxAgreeTermsOfUse();
+        registrationPage.clickBtnYalla();
+        Assert.assertTrue(registrationPage
+                        .isTextInErrorPresent("Password is required"),
+                "validate error message Password is required");
+
+    }
+
+    @Test
+    public void registrationNegativeTest_WrongPasswordNoLowercase() {
+        User user = User.builder()
+                .firstName("Pietro")
+                .lastName("Aretino")
+                .email("Venezia@gmail.it")
+                .password("S3R3N!S5!M@")
+                .build();
+        registrationPage.typeRegistrationForm(user);
+        registrationPage.setCheckBoxAgreeTermsOfUse();
+        registrationPage.clickBtnYalla();
+        Assert.assertTrue(registrationPage
+                        .isTextInErrorPresent("Password is required"),
+                "validate error message Password is required");
+
+    }
+
+    @Test
+    public void registrationNegativeTest_WrongPasswordNoSpecialCharacter() {
+        User user = User.builder()
+                .firstName("Pietro")
+                .lastName("Aretino")
+                .email("Venezia@gmail.it")
+                .password("S3R3NiS5iMa")
+                .build();
+        registrationPage.typeRegistrationForm(user);
+        registrationPage.setCheckBoxAgreeTermsOfUse();
+        registrationPage.clickBtnYalla();
+        Assert.assertTrue(registrationPage
+                        .isTextInErrorPresent("Password is required"),
+                "validate error message Password is required");
+
+    }
+
+    @Test
+    public void registrationNegativeTest_WrongPasswordNoNumbers() {
+        User user = User.builder()
+                .firstName("Pietro")
+                .lastName("Aretino")
+                .email("Venezia@gmail.it")
+                .password("SeReN!Ss!M@")
+                .build();
+        registrationPage.typeRegistrationForm(user);
+        registrationPage.setCheckBoxAgreeTermsOfUse();
+        registrationPage.clickBtnYalla();
+        Assert.assertTrue(registrationPage
+                        .isTextInErrorPresent("Password is required"),
+                "validate error message Password is required");
+
+    }
+
+    @Test
+    public void registrationNegativeTest_WrongPasswordFewerThan8Symbols() {
+        User user = User.builder()
+                .firstName("Pietro")
+                .lastName("Aretino")
+                .email("Venezia@gmail.it")
+                .password("S3R&N")
+                .build();
+        registrationPage.typeRegistrationForm(user);
+        registrationPage.setCheckBoxAgreeTermsOfUse();
+        registrationPage.clickBtnYalla();
+        Assert.assertTrue(registrationPage
+                        .isTextInErrorPresent("Password is required"),
+                "validate error message Password is required");
+
+    }
+
+
+
+
+
 
 }
