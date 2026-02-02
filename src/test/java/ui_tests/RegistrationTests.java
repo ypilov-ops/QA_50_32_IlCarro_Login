@@ -91,5 +91,61 @@ public class RegistrationTests extends ApplicationManager {
         softAssert.assertAll();
     }
 
+    @Test
+    public void registrationNegativeTest_UserAlreadyExists() {
+        User user = User.builder()
+                .firstName("ftrye")
+                .lastName("dtrye")
+                .email("sveta548@smd.com")
+                .password("Password123#")
+                .build();
+        registrationPage.typeRegistrationForm(user);
+        registrationPage.clickCheckBoxWithActions();
+        registrationPage.clickBtnYalla();
+        Assert.assertTrue(new PopUpPage(getDriver())
+                .isTextInPopUpMessagePresent("User already exists"));
+    }
+
+    @Test
+    public void registrationNegativeTest_WithSpaceInFirstName() {
+        User user = User.builder()
+                .firstName(" ")
+                .lastName("dtrye")
+                .email("sveta548@smd.com")
+                .password("Password123#")
+                .build();
+        registrationPage.typeRegistrationForm(user);
+        registrationPage.clickCheckBoxWithActions();
+        registrationPage.clickBtnYalla();
+        Assert.assertTrue(new PopUpPage(getDriver())
+                .isTextInPopUpMessagePresent("must not be blank"));
+    }
+
+    @Test
+    public void registrationNegativeTest_WithAllEmptyFields() {
+        User user = User.builder()
+                .firstName("")
+                .lastName("")
+                .email("")
+                .password("")
+                .build();
+        registrationPage.typeRegistrationForm(user);
+        registrationPage.setCheckBoxAgreeTermsOfUse();
+        registrationPage.clickBtnYalla();
+        softAssert.assertTrue(registrationPage
+                        .isTextInErrorPresent("Name is required"),
+                "validate error message Name is required");
+        softAssert.assertTrue(registrationPage
+                        .isTextInErrorPresent("Last name is required"),
+                "validate error message Last name is required");
+        softAssert.assertTrue(registrationPage
+                        .isTextInErrorPresent("Email is required"),
+                "validate error message Email is required");
+        softAssert.assertTrue(registrationPage
+                        .isTextInErrorPresent("Password is required"),
+                "validate error message Password is required");
+        softAssert.assertAll();
+    }
+
 
 }
