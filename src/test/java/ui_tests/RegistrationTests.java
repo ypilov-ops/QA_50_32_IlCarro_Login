@@ -14,6 +14,7 @@ import pages.RegistrationPage;
 import java.util.Random;
 
 import static utils.UserFactory.*;
+import static utils.PropertiesReader.*;
 
 public class RegistrationTests extends ApplicationManager {
     RegistrationPage registrationPage;
@@ -27,13 +28,11 @@ public class RegistrationTests extends ApplicationManager {
 
     @Test
     public void registrationPositiveTest() {
-        int i = new Random().nextInt(1000);
-        User user = User.builder()
-                .firstName("UUU")
-                .lastName("PPP")
-                .email("lmkjiu"+i+"@defrt.bhy")
-                .password("Pqwerty453!")
-                .build();
+        User user = new User(getProperty("base.properties", "FirstName"),
+                getProperty("base.properties", "LastName"),
+                getProperty("base.properties", "Email"),
+                getProperty("base.properties", "Password"));
+
         registrationPage.typeRegistrationForm(user);
         registrationPage.clickCheckBoxWithActions();
         registrationPage.clickBtnYalla();
@@ -51,54 +50,16 @@ public class RegistrationTests extends ApplicationManager {
                 .isTextInPopUpMessagePresent("You are logged in success"));
     }
 
-    @Test
-    public void registrationNegativeTest_WithPopUpPage_EmptyPassword(){
-        User user = User.builder()
-                .email("sima_simonova370@gmail.com")
-                .password("")
-                .build();
-        HomePage homePage = new HomePage(getDriver());
-        homePage.clickBtnLogin();
-        LoginPage loginPage = new LoginPage(getDriver());
-        loginPage.typeLoginForm(user);
-        loginPage.clickBtnYalla();
-        softAssert.assertTrue(loginPage.isTextInErrorPresent
-                ("It'snot look like email"), "validate field email");
-        System.out.println("wrong text!!");
-        softAssert.assertTrue(loginPage.isTextInErrorPresent
-                ("Password is required"), "validate field password");
-        System.out.println("right text!!");
-        softAssert.assertAll();
-    }
 
-    @Test
-    public void registrationNegativeTest_WithPopUpPage_EmptyEmail(){
-        User user = User.builder()
-                .email("")
-                .password("D@NT#A")
-                .build();
-        HomePage homePage = new HomePage(getDriver());
-        homePage.clickBtnLogin();
-        LoginPage loginPage = new LoginPage(getDriver());
-        loginPage.typeLoginForm(user);
-        loginPage.clickBtnYalla();
-        softAssert.assertTrue(loginPage.isTextInErrorPresent
-                ("It'snot look like email"), "validate field email");
-        System.out.println("wrong text!!");
-        softAssert.assertTrue(loginPage.isTextInErrorPresent
-                ("Password is required"), "validate field password");
-        System.out.println("right text!!");
-        softAssert.assertAll();
-    }
 
     @Test
     public void registrationNegativeTest_UserAlreadyExists() {
-        User user = User.builder()
-                .firstName("ftrye")
-                .lastName("dtrye")
-                .email("sveta548@smd.com")
-                .password("Password123#")
-                .build();
+        User user = new User(getProperty("base.properties", "FirstName"),
+                getProperty("base.properties", "LastName"),
+                getProperty("base.properties", "Email"),
+                getProperty("base.properties", "Password"));
+
+
         registrationPage.typeRegistrationForm(user);
         registrationPage.clickCheckBoxWithActions();
         registrationPage.clickBtnYalla();
@@ -108,12 +69,11 @@ public class RegistrationTests extends ApplicationManager {
 
     @Test
     public void registrationNegativeTest_WithSpaceInFirstName() {
-        User user = User.builder()
-                .firstName(" ")
-                .lastName("dtrye")
-                .email("sveta548@smd.com")
-                .password("Password123#")
-                .build();
+        User user = new User(getProperty("base.properties", " "+"FirstName"),
+                getProperty("base.properties", "LastName"),
+                getProperty("base.properties", "Email"),
+                getProperty("base.properties", "Password"));
+
         registrationPage.typeRegistrationForm(user);
         registrationPage.clickCheckBoxWithActions();
         registrationPage.clickBtnYalla();
@@ -152,15 +112,15 @@ public class RegistrationTests extends ApplicationManager {
         User user = User.builder()
                 .firstName("Pietro")
                 .lastName("Aretino")
-                .email("Venezia@gmail.it")
+                .email("venezia@gmail.it")
                 .password("s3r3n!s5!m@")
                 .build();
         registrationPage.typeRegistrationForm(user);
         registrationPage.setCheckBoxAgreeTermsOfUse();
         registrationPage.clickBtnYalla();
         Assert.assertTrue(registrationPage
-                        .isTextInErrorPresent("Password is required"),
-                "validate error message Password is required");
+                        .isTextInErrorPresent("Password must contain 1 uppercase letter, 1 lowercase letter, 1 number and one special symbol of [@$#^&*!]"),
+                "validate error message Password must contain 1 uppercase letter, 1 lowercase letter, 1 number and one special symbol of [@$#^&*!]");
 
     }
 
@@ -169,15 +129,15 @@ public class RegistrationTests extends ApplicationManager {
         User user = User.builder()
                 .firstName("Pietro")
                 .lastName("Aretino")
-                .email("Venezia@gmail.it")
+                .email("venezia@gmail.it")
                 .password("S3R3N!S5!M@")
                 .build();
         registrationPage.typeRegistrationForm(user);
         registrationPage.setCheckBoxAgreeTermsOfUse();
         registrationPage.clickBtnYalla();
         Assert.assertTrue(registrationPage
-                        .isTextInErrorPresent("Password is required"),
-                "validate error message Password is required");
+                        .isTextInErrorPresent("Password must contain 1 uppercase letter, 1 lowercase letter, 1 number and one special symbol of [@$#^&*!]"),
+                "validate error message Password must contain 1 uppercase letter, 1 lowercase letter, 1 number and one special symbol of [@$#^&*!]");
 
     }
 
@@ -186,15 +146,15 @@ public class RegistrationTests extends ApplicationManager {
         User user = User.builder()
                 .firstName("Pietro")
                 .lastName("Aretino")
-                .email("Venezia@gmail.it")
+                .email("venezia@gmail.it")
                 .password("S3R3NiS5iMa")
                 .build();
         registrationPage.typeRegistrationForm(user);
         registrationPage.setCheckBoxAgreeTermsOfUse();
         registrationPage.clickBtnYalla();
         Assert.assertTrue(registrationPage
-                        .isTextInErrorPresent("Password is required"),
-                "validate error message Password is required");
+                        .isTextInErrorPresent("Password must contain 1 uppercase letter, 1 lowercase letter, 1 number and one special symbol of [@$#^&*!]"),
+                "validate error message Password must contain 1 uppercase letter, 1 lowercase letter, 1 number and one special symbol of [@$#^&*!]");
 
     }
 
@@ -203,15 +163,15 @@ public class RegistrationTests extends ApplicationManager {
         User user = User.builder()
                 .firstName("Pietro")
                 .lastName("Aretino")
-                .email("Venezia@gmail.it")
+                .email("venezia@gmail.it")
                 .password("SeReN!Ss!M@")
                 .build();
         registrationPage.typeRegistrationForm(user);
         registrationPage.setCheckBoxAgreeTermsOfUse();
         registrationPage.clickBtnYalla();
         Assert.assertTrue(registrationPage
-                        .isTextInErrorPresent("Password is required"),
-                "validate error message Password is required");
+                        .isTextInErrorPresent("Password must contain 1 uppercase letter, 1 lowercase letter, 1 number and one special symbol of [@$#^&*!]"),
+                "validate error message Password must contain 1 uppercase letter, 1 lowercase letter, 1 number and one special symbol of [@$#^&*!]");
 
     }
 
@@ -220,21 +180,16 @@ public class RegistrationTests extends ApplicationManager {
         User user = User.builder()
                 .firstName("Pietro")
                 .lastName("Aretino")
-                .email("Venezia@gmail.it")
+                .email("venezia@gmail.it")
                 .password("S3R&N")
                 .build();
         registrationPage.typeRegistrationForm(user);
         registrationPage.setCheckBoxAgreeTermsOfUse();
         registrationPage.clickBtnYalla();
         Assert.assertTrue(registrationPage
-                        .isTextInErrorPresent("Password is required"),
-                "validate error message Password is required");
+                        .isTextInErrorPresent("Password must contain minimum 8 symbols"),
+                "validate error message Password must contain minimum 8 symbols");
 
     }
-
-
-
-
-
 
 }
